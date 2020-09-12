@@ -34,7 +34,7 @@ public class Practice1 {
         int rnd;
         Random random = new Random();
         for (int i=0;i<10;i++){
-            rnd = random.nextInt(100 + 1);;
+            rnd = random.nextInt(100 + 1);
             array1[i]=rnd;
         }
         System.out.println("Случайный массив2");
