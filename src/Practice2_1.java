@@ -1,19 +1,19 @@
 
 public class Practice2_1 {
     public static void main(String[] args) {
-        Shape one = new Shape();
+        Shape1 one = new Shape1();
         GetShape two = new GetShape(one);
 
 
     }
 }
-class Shape {
-    String shape = "Круг";
+class Shape1 {
+    String shape1 = "Круг";
 
 
 }
-class GetShape extends Shape{
-    public GetShape(Shape obj) {
-        System.out.println(obj.shape);
+class GetShape extends Shape1 {
+    public GetShape(Shape1 obj) {
+        System.out.println(obj.shape1);
     }
 }
