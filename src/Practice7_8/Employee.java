@@ -2,16 +2,8 @@ package Practice7_8;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Collections;
-public class Employee implements EmployeePosition{
-    @Override
-    public String getJobTitle() {
-        return null;
-    }
+public class Employee {
 
-    @Override
-    public double calcSalary() {
-        return 0;
-    }
 
     String name, surname, post;
     int pay = Random2();
@@ -38,13 +30,13 @@ public class Employee implements EmployeePosition{
     }
 
 interface EmployeePosition {
- public String getJobTitle();
- public double calcSalary();
+  String getJobTitle();
+  double calcSalary(double baseSalary);
 
 }
-class Manager extends Employee{
-    public double calcSalary(){
-        return pay+0.05*Random2();
+class Manager implements EmployeePosition{
+    public double calcSalary(double baseSalary){
+        return baseSalary+0.05*Random2();
     }
 
 
@@ -66,9 +58,9 @@ class TopManager extends Employee{
         return "TopManager";
     }
 }
-class Operator extends Employee{
+class Operator implements EmployeePosition{
    public double calcSalary(){
-        return pay;
+        return double salary;
     }
 
 
