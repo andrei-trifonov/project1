@@ -21,12 +21,7 @@ public class Employee {
 
     }
 
-   int Random2(){
-        int rnd;
-        Random random = new Random();
-        rnd = random.nextInt(25000 + 115000);
-        return rnd;
-        }
+
     }
 
 interface EmployeePosition {
@@ -36,7 +31,10 @@ interface EmployeePosition {
 }
 class Manager implements EmployeePosition{
     public double calcSalary(double baseSalary){
-        return baseSalary+0.05*Random2();
+        int Random2;
+        Random random = new Random();
+       Random2 = random.nextInt(25000 + 115000);
+        return baseSalary+0.05*Random2;
     }
 
 
@@ -44,13 +42,13 @@ class Manager implements EmployeePosition{
         return "Manager";
     }
 }
-class TopManager extends Employee{
-    public double calcSalary(){
+class TopManager implements EmployeePosition{
+    public double calcSalary(double baseSalary){
         if (Random1()>10000000){
-            return pay +pay*1.5;
+            return baseSalary +baseSalary*1.5;
         }
         else
-            return pay;
+            return baseSalary;
     }
 
 
@@ -59,8 +57,10 @@ class TopManager extends Employee{
     }
 }
 class Operator implements EmployeePosition{
-   public double calcSalary(){
-        return double salary;
+   public double calcSalary(double baseSalary){
+       Random random = new Random();
+       baseSalary = random.nextInt(25000 + 115000);
+        return  baseSalary;
     }
 
 
