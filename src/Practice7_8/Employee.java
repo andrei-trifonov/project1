@@ -75,11 +75,11 @@ class Company  {
                 for (int i=0;i<num;i++) {
                     getIncome(150000);
                     list.add(new TopManager(Income));
-                }
+                }break;
             case 3:
                 for (int i=0;i<num;i++) {
                     list.add(new Operator());
-                }
+                }break;
         }
 
     }
@@ -103,7 +103,7 @@ class Company  {
     void getIncome(double baseSalary){
         Income = 0;
         for (int i=0;i< list.size();i++){
-          Income+=( list.get(i).calcSalary(baseSalary)-baseSalary);
+          Income+=(( list.get(i).calcSalary(baseSalary)-baseSalary)/0.05);
         }
 
     }
