@@ -6,20 +6,7 @@ public class Employee {
 
 
     String name, surname, post;
-    int pay = Random2();
-    int Random1(){
-        int rnd=0;
-        boolean use=false;
-        if (use==false){
-
-        Random random = new Random();
-        rnd = random.nextInt(10000000 + 5000000);
-        use = true;
-        return rnd;}
-        else
-            return rnd;
-
-    }
+    double baseSalary;
 
 
     }
@@ -30,11 +17,14 @@ interface EmployeePosition {
 
 }
 class Manager implements EmployeePosition{
+    int Random;
+    Manager(){
+    Random random = new Random();
+    Random = random.nextInt(25000 + 115000);
+    }
     public double calcSalary(double baseSalary){
-        int Random2;
-        Random random = new Random();
-       Random2 = random.nextInt(25000 + 115000);
-        return baseSalary+0.05*Random2;
+
+        return baseSalary+0.05*Random;
     }
 
 
@@ -43,8 +33,12 @@ class Manager implements EmployeePosition{
     }
 }
 class TopManager implements EmployeePosition{
+    int Income;
+    TopManager (int income){
+        Income = income;
+    }
     public double calcSalary(double baseSalary){
-        if (Random1()>10000000){
+        if (Income>10000000){
             return baseSalary +baseSalary*1.5;
         }
         else
@@ -58,98 +52,132 @@ class TopManager implements EmployeePosition{
 }
 class Operator implements EmployeePosition{
    public double calcSalary(double baseSalary){
-       Random random = new Random();
-       baseSalary = random.nextInt(25000 + 115000);
         return  baseSalary;
     }
-
-
     public String getJobTitle() {
         return "Operator";
     }
 }
-class Company extends Employee{
+class Company  {
 
-    public static ArrayList<Employee> hire(int sort, int num, ArrayList<Employee> list){
+    private int Income;
+    private ArrayList<EmployeePosition> list = new ArrayList<>();
+
+    void hire(int sort, int num){
         switch (sort){
             case 1:
                 for (int i=0;i<num;i++) {
                     list.add(new Manager());
+
                 }
                 break;
             case 2:
                 for (int i=0;i<num;i++) {
-                    list.add(new TopManager());
+                    getIncome(150000);
+                    list.add(new TopManager(Income));
                 }
             case 3:
                 for (int i=0;i<num;i++) {
                     list.add(new Operator());
                 }
         }
-        return list;
+
     }
 
-    public static ArrayList<Employee> hireAll(int num, ArrayList<Employee> list){
+    void hireAll(int num){
         for (int i=0;i<num;i++) {
             list.add(new Manager());
-            list.add(new TopManager());
+            getIncome(150000);
+            list.add(new TopManager(Income));
             list.add(new Operator());
         }
-        return list;
+
     }
 
-    public static ArrayList<Employee> fire(int num, ArrayList<Employee> list){
+   void  fire(int num){
         for (int i=0; i<num;i++)
         list.remove(i);
-        return  list;
+
     }
 
-    int getIncome(){
-    return Random1();
+    void getIncome(double baseSalary){
+        Income = 0;
+        for (int i=0;i< list.size();i++){
+          Income+=( list.get(i).calcSalary(baseSalary)-baseSalary);
+        }
+
     }
 
-    public static ArrayList<Employee> getTopSalaryStaff(int count, ArrayList<Employee> list){
-        for(int i=0;i<=count;i++){
-            for(int j=0;j<=count;j++){
-               if ( list.get(i).calcSalary() < list.get(j).calcSalary()){
+    void getTopSalaryStaff(int count){
+        double salary1=0, salary2=0;
+
+        for(int i=0;i< list.size();i++){
+            switch (list.get(i).getJobTitle()){
+                case "Operator": salary1 = 50000; break;
+                case "TopManager": salary1 = 150000; break;
+                case "Manager": salary1 =150000; break;}
+            for(int j=0;j< list.size();j++){
+                switch (list.get(j).getJobTitle()){
+                    case "Operator": salary2 = 50000; break;
+                    case "TopManager": salary2 = 150000; break;
+                    case "Manager": salary2 =150000; break;}
+               if ( list.get(i).calcSalary(salary1) > list.get(j).calcSalary(salary2)){
                    Collections.swap(list,i,j);
                }
-
-            }
+                }
         }
-        return list;
 
-    }
-    public static ArrayList<Employee> getLowestSalaryStaff(int count, ArrayList<Employee> list){
-        for(int i=0;i<count;i++){
-             for(int j=0;j<count;j++){
-            if ( list.get(i).calcSalary() > list.get(j).calcSalary()){
-                Collections.swap(list,i,j);
-            }
+        for (int i=0;i<count;i++){
+            salary1=0;
+            switch (list.get(i).getJobTitle()){
+                case "Operator": salary1 = 50000; break;
+                case "TopManager": salary1 = 150000; break;
+                case "Manager": salary1 =150000; break;}
+            System.out.println(list.get(i).calcSalary(salary1));
 
         }
     }
-        return list;
-    }
 
+    void getLowerSalaryStaff(int count){
+        double salary1=0, salary2=0;
+
+        for(int i=0;i< list.size();i++){
+            switch (list.get(i).getJobTitle()){
+                case "Operator": salary1 = 50000.0; break;
+                case "TopManager": salary1 = 150000.0; break;
+                case "Manager": salary1 =150000.0; break;
+                }
+            for(int j=0;j< list.size();j++){
+                switch (list.get(j).getJobTitle()){
+                    case "Operator": salary2 = 50000.0; break;
+                    case "TopManager": salary2 = 150000.0; break;
+                    case "Manager": salary2 =150000.0; break;}
+                if (( list.get(i).calcSalary(salary1)) < (list.get(j).calcSalary(salary2))){
+
+                    Collections.swap(list,i,j);
+                }
+            }
+        }
+        for (int i=0;i<count;i++){
+            switch (list.get(i).getJobTitle()){
+                case "Operator": salary1 = 50000; break;
+                case "TopManager": salary1 = 150000; break;
+                case "Manager": salary1 = 150000; break;}
+            System.out.println(list.get(i).calcSalary(salary1));
+
+        }
+    }
     public static void main(String[] args) {
 
-        ArrayList<Employee> list = new ArrayList<>();
-
-        list=hire(3,180,list);
-        list=hire(2,10,list);
-        list=hire(1,80,list);
+        Company company1 = new Company();
+        company1.hire(3,180);
+        company1.hire(1,80);
+        company1.hire(2,10);
         System.out.println("Топ высоких зарплат");
-        list=getLowestSalaryStaff(30,list);
-        for (int i = 0; i < 10; i++) {
-            System.out.println(list.get(i).calcSalary());
-        }
-        list=getTopSalaryStaff(30,list);
+        company1.getTopSalaryStaff(10);
         System.out.println("Топ низких зарплат");
-        for (int i = 0; i < 30; i++) {
-            System.out.println(list.get(i).calcSalary());
-        }
-        list=fire(135,list);
+        company1.getLowerSalaryStaff(30);
+        company1.fire(135);
 
 
     }}
