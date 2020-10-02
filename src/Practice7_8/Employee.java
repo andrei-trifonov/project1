@@ -59,7 +59,9 @@ class Operator implements EmployeePosition{
     }
 }
 class Company  {
-
+    public double manager_salary;
+    public double topmanager_salary;
+    public double operator_salary;
     private int Income;
     private ArrayList<EmployeePosition> list = new ArrayList<>();
 
@@ -73,7 +75,7 @@ class Company  {
                 break;
             case 2:
                 for (int i=0;i<num;i++) {
-                    getIncome(150000);
+                    getIncome(manager_salary);
                     list.add(new TopManager(Income));
                 }break;
             case 3:
@@ -87,7 +89,7 @@ class Company  {
     void hireAll(int num){
         for (int i=0;i<num;i++) {
             list.add(new Manager());
-            getIncome(150000);
+            getIncome(manager_salary);
             list.add(new TopManager(Income));
             list.add(new Operator());
         }
@@ -97,13 +99,15 @@ class Company  {
    void  fire(int num){
         for (int i=0; i<num;i++)
         list.remove(i);
+        getIncome(manager_salary);
 
     }
 
     void getIncome(double baseSalary){
         Income = 0;
         for (int i=0;i< list.size();i++){
-          Income+=(( list.get(i).calcSalary(baseSalary)-baseSalary)/0.05);
+            if (list.get(i).getJobTitle() == "Manager"){
+          Income+=(( list.get(i).calcSalary(baseSalary)-baseSalary)/0.05);}
         }
 
     }
@@ -113,14 +117,14 @@ class Company  {
 
         for(int i=0;i< list.size();i++){
             switch (list.get(i).getJobTitle()){
-                case "Operator": salary1 = 50000; break;
-                case "TopManager": salary1 = 150000; break;
-                case "Manager": salary1 =150000; break;}
+                case "Operator": salary1 = operator_salary; break;
+                case "TopManager": salary1 = topmanager_salary; break;
+                case "Manager": salary1 =manager_salary; break;}
             for(int j=0;j< list.size();j++){
                 switch (list.get(j).getJobTitle()){
-                    case "Operator": salary2 = 50000; break;
-                    case "TopManager": salary2 = 150000; break;
-                    case "Manager": salary2 =150000; break;}
+                    case "Operator": salary2 = operator_salary; break;
+                    case "TopManager": salary2 = topmanager_salary; break;
+                    case "Manager": salary2 =manager_salary; break;}
                if ( list.get(i).calcSalary(salary1) > list.get(j).calcSalary(salary2)){
                    Collections.swap(list,i,j);
                }
@@ -130,9 +134,9 @@ class Company  {
         for (int i=0;i<count;i++){
             salary1=0;
             switch (list.get(i).getJobTitle()){
-                case "Operator": salary1 = 50000; break;
-                case "TopManager": salary1 = 150000; break;
-                case "Manager": salary1 =150000; break;}
+                case "Operator": salary1 = operator_salary; break;
+                case "TopManager": salary1 = topmanager_salary; break;
+                case "Manager": salary1 =manager_salary; break;}
             System.out.println(list.get(i).calcSalary(salary1));
 
         }
@@ -143,15 +147,15 @@ class Company  {
 
         for(int i=0;i< list.size();i++){
             switch (list.get(i).getJobTitle()){
-                case "Operator": salary1 = 50000.0; break;
-                case "TopManager": salary1 = 150000.0; break;
-                case "Manager": salary1 =150000.0; break;
+                case "Operator": salary1 = operator_salary; break;
+                case "TopManager": salary1 = topmanager_salary; break;
+                case "Manager": salary1 = manager_salary; break;
                 }
             for(int j=0;j< list.size();j++){
                 switch (list.get(j).getJobTitle()){
-                    case "Operator": salary2 = 50000.0; break;
-                    case "TopManager": salary2 = 150000.0; break;
-                    case "Manager": salary2 =150000.0; break;}
+                    case "Operator": salary2 = operator_salary; break;
+                    case "TopManager": salary2 = topmanager_salary; break;
+                    case "Manager": salary2 = manager_salary; break;}
                 if (( list.get(i).calcSalary(salary1)) < (list.get(j).calcSalary(salary2))){
 
                     Collections.swap(list,i,j);
@@ -160,9 +164,9 @@ class Company  {
         }
         for (int i=0;i<count;i++){
             switch (list.get(i).getJobTitle()){
-                case "Operator": salary1 = 50000; break;
-                case "TopManager": salary1 = 150000; break;
-                case "Manager": salary1 = 150000; break;}
+                case "Operator": salary1 = operator_salary; break;
+                case "TopManager": salary1 = topmanager_salary; break;
+                case "Manager": salary1 = manager_salary; break;}
             System.out.println(list.get(i).calcSalary(salary1));
 
         }
@@ -170,6 +174,9 @@ class Company  {
     public static void main(String[] args) {
 
         Company company1 = new Company();
+        company1.manager_salary = 150000;
+        company1.topmanager_salary = 150000;
+        company1.operator_salary = 100000;
         company1.hire(3,180);
         company1.hire(1,80);
         company1.hire(2,10);
@@ -179,5 +186,5 @@ class Company  {
         company1.getLowerSalaryStaff(30);
         company1.fire(135);
 
-
-    }}
+    }
+}
