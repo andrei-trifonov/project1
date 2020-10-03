@@ -1,190 +1,184 @@
 package Practice7_8;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Collections;
+import java.util.*;
+
+
 public class Employee {
+    public double finalsalary;
+    public String position, name, surname;
 
+    Employee(){}
 
-    String name, surname, post;
-    double baseSalary;
-
-
+    Employee(String position){
+        this.position = position;
     }
 
-interface EmployeePosition {
-  String getJobTitle();
-  double calcSalary(double baseSalary);
+    void setFinalsalary(double finalsalary){
+        this.finalsalary = finalsalary;
+    }
+    double getFinalsalary(){
+        return finalsalary;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+    public void setPosition(String position) {
+        this.position = position;
+    }
+    String getName(){
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
 }
+
+interface EmployeePosition{
+    String getJobTitle();
+    double calcSalary(double baseSalary);
+}
+
 class Manager implements EmployeePosition{
-    int Random;
-    Manager(){
-    Random random = new Random();
-    Random = random.nextInt(25000 + 115000);
-    }
-    public double calcSalary(double baseSalary){
 
-        return baseSalary+0.05*Random;
-    }
-
-
+    @Override
     public String getJobTitle() {
         return "Manager";
     }
+
+    @Override
+    public double calcSalary(double baseSalary) {
+        double temp = Math.round(115000 + (Math.random()) * ((140000 - 115000) + 1));
+        Company.CompanyIncome += 0.95 * temp;
+        return 0.05 * temp + baseSalary;
+    }
 }
+
 class TopManager implements EmployeePosition{
-    int Income;
-    TopManager (int income){
-        Income = income;
-    }
-    public double calcSalary(double baseSalary){
-        if (Income>10000000){
-            return baseSalary +baseSalary*1.5;
-        }
-        else
-            return baseSalary;
-    }
 
 
+    @Override
     public String getJobTitle() {
-        return "TopManager";
+        return "Top Manager";
+    }
+
+    @Override
+    public double calcSalary(double baseSalary) {
+        if (Company.CompanyIncome > 10000000){
+            return 1.5 * baseSalary + baseSalary;
+        } else{
+            return baseSalary;
+        }
     }
 }
+
 class Operator implements EmployeePosition{
-   public double calcSalary(double baseSalary){
-        return  baseSalary;
-    }
+
+    @Override
     public String getJobTitle() {
         return "Operator";
     }
+
+    @Override
+    public double calcSalary(double baseSalary) {
+        return baseSalary;
+    }
 }
-class Company  {
+
+class Company{
+    public ArrayList<Employee> employees = new ArrayList<Employee>();
+    public double operator_salary;
     public double manager_salary;
     public double topmanager_salary;
-    public double operator_salary;
-    private int Income;
-    private ArrayList<EmployeePosition> list = new ArrayList<>();
-
-    void hire(int sort, int num){
-        switch (sort){
-            case 1:
-                for (int i=0;i<num;i++) {
-                    list.add(new Manager());
-
-                }
+    void hire (String pos, Employee em){
+        switch (pos) {
+            case "Manager":  em.setFinalsalary(new Manager().calcSalary(manager_salary));
+                em.setPosition(new Manager().getJobTitle());
                 break;
-            case 2:
-                for (int i=0;i<num;i++) {
-                    getIncome(manager_salary);
-                    list.add(new TopManager(Income));
-                }break;
-            case 3:
-                for (int i=0;i<num;i++) {
-                    list.add(new Operator());
-                }break;
+            case "Top Manager":  em.setFinalsalary(new TopManager().calcSalary(topmanager_salary));
+                em.setPosition(new TopManager().getJobTitle());
+                break;
+            case "Operator":  em.setFinalsalary(new Operator().calcSalary(operator_salary));
+                em.setPosition(new Operator().getJobTitle());
+                break;
         }
+    }
+    void hireAll(String pos, int amount) {
+        for (int i = 0; i < amount; i++) {
+            switch (pos) {
+                case "Manager":
+                    employees.add(i, new Employee(new Manager().getJobTitle()));
+                    employees.get(i).setFinalsalary(new Manager().calcSalary(manager_salary));
 
+                    break;
+                case "Top Manager":
+                    employees.add(i, new Employee(new TopManager().getJobTitle()));
+                    employees.get(i).setFinalsalary(new TopManager().calcSalary(topmanager_salary));
+                    break;
+                case "Operator":
+                    employees.add(i, new Employee(new Operator().getJobTitle()));
+                    employees.get(i).setFinalsalary(new Operator().calcSalary(operator_salary));
+                    break;
+            }
+        }
+        System.out.println(amount + " employees hired.");
     }
 
-    void hireAll(int num){
-        for (int i=0;i<num;i++) {
-            list.add(new Manager());
-            getIncome(manager_salary);
-            list.add(new TopManager(Income));
-            list.add(new Operator());
-        }
 
-    }
+    void fire(int amount){
+        for(int i=0; i<amount; i++) {
 
-   void  fire(int num){
-        for (int i=0; i<num;i++)
-        list.remove(i);
-        getIncome(manager_salary);
-
-    }
-
-    void getIncome(double baseSalary){
-        Income = 0;
-        for (int i=0;i< list.size();i++){
-            if (list.get(i).getJobTitle() == "Manager"){
-          Income+=(( list.get(i).calcSalary(baseSalary)-baseSalary)/0.05);}
-        }
-
-    }
-
-    void getTopSalaryStaff(int count){
-        double salary1=0, salary2=0;
-
-        for(int i=0;i< list.size();i++){
-            switch (list.get(i).getJobTitle()){
-                case "Operator": salary1 = operator_salary; break;
-                case "TopManager": salary1 = topmanager_salary; break;
-                case "Manager": salary1 =manager_salary; break;}
-            for(int j=0;j< list.size();j++){
-                switch (list.get(j).getJobTitle()){
-                    case "Operator": salary2 = operator_salary; break;
-                    case "TopManager": salary2 = topmanager_salary; break;
-                    case "Manager": salary2 =manager_salary; break;}
-               if ( list.get(i).calcSalary(salary1) > list.get(j).calcSalary(salary2)){
-                   Collections.swap(list,i,j);
-               }
-                }
-        }
-
-        for (int i=0;i<count;i++){
-            salary1=0;
-            switch (list.get(i).getJobTitle()){
-                case "Operator": salary1 = operator_salary; break;
-                case "TopManager": salary1 = topmanager_salary; break;
-                case "Manager": salary1 =manager_salary; break;}
-            System.out.println(list.get(i).calcSalary(salary1));
-
+            employees.remove(i);
         }
     }
 
-    void getLowerSalaryStaff(int count){
-        double salary1=0, salary2=0;
 
-        for(int i=0;i< list.size();i++){
-            switch (list.get(i).getJobTitle()){
-                case "Operator": salary1 = operator_salary; break;
-                case "TopManager": salary1 = topmanager_salary; break;
-                case "Manager": salary1 = manager_salary; break;
-                }
-            for(int j=0;j< list.size();j++){
-                switch (list.get(j).getJobTitle()){
-                    case "Operator": salary2 = operator_salary; break;
-                    case "TopManager": salary2 = topmanager_salary; break;
-                    case "Manager": salary2 = manager_salary; break;}
-                if (( list.get(i).calcSalary(salary1)) < (list.get(j).calcSalary(salary2))){
 
-                    Collections.swap(list,i,j);
+    void getLowestSalaryStaff( int count){
+        for(int i=0; i < employees.size(); i++){
+            for(int j=i; j < employees.size(); j++){
+                if(employees.get(i).getFinalsalary() > employees.get(j).getFinalsalary()){
+                    Collections.swap(employees, i, j);
                 }
             }
         }
-        for (int i=0;i<count;i++){
-            switch (list.get(i).getJobTitle()){
-                case "Operator": salary1 = operator_salary; break;
-                case "TopManager": salary1 = topmanager_salary; break;
-                case "Manager": salary1 = manager_salary; break;}
-            System.out.println(list.get(i).calcSalary(salary1));
-
+        for(int i=0; i<count; i++) {
+            System.out.println(employees.get(i).getPosition() + " " + employees.get(i).getFinalsalary());
+            System.out.println();
         }
+
     }
+   void getTopSalaryStaff(int count) {
+       for(int i=0; i < employees.size(); i++){
+           for(int j=i; j < employees.size(); j++){
+               if(employees.get(i).getFinalsalary() < employees.get(j).getFinalsalary()){
+                   Collections.swap(employees, i, j);
+               }
+           }
+       }
+       for(int i=0; i<count; i++) {
+           System.out.println(employees.get(i).getPosition() + " " + employees.get(i).getFinalsalary());
+           System.out.println();
+       }
+    }
+
+    public static double CompanyIncome;
+
     public static void main(String[] args) {
+
+
 
         Company company1 = new Company();
         company1.manager_salary = 150000;
-        company1.topmanager_salary = 150000;
         company1.operator_salary = 100000;
-        company1.hire(3,180);
-        company1.hire(1,80);
-        company1.hire(2,10);
-        System.out.println("Топ высоких зарплат");
+        company1.topmanager_salary = 150000;
+        company1.hireAll("Manager",50);
+        company1.hireAll("Operator", 180);
+        company1.hireAll("Top Manager", 10);
         company1.getTopSalaryStaff(10);
-        System.out.println("Топ низких зарплат");
-        company1.getLowerSalaryStaff(30);
-        company1.fire(135);
+        company1.getLowestSalaryStaff(30);
+        company1.fire(10);
 
     }
 }
