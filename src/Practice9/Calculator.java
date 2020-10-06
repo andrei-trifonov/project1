@@ -101,12 +101,9 @@ public class Calculator extends JFrame
             public void actionPerformed(ActionEvent e) {
                 String str;
                 char sign = '&';
-                boolean ready = false;
-                char sign_next;
                 double a = 0;
                 double b = 0;
                 String tmps = "";
-                char tmpc;
                 str = data.getText();
                 for (int i = 0; i < str.length(); i++) {
                     if(str.charAt(i) != '+' && str.charAt(i) != '-' && str.charAt(i) != '/' && str.charAt(i) != '*' ){
