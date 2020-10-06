@@ -1,23 +1,15 @@
-package Practice7_8;
+package Practice10;
 import java.util.*;
 
 
 public class Employee {
     private double finalsalary;
     private String position, name, surname;
-
+    private GregorianCalendar birthDate;
     Employee(){}
 
     Employee(String position){
         this.position = position;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getSurname() {
-        return surname;
     }
 
     void setFinalsalary(double finalsalary){
@@ -26,7 +18,6 @@ public class Employee {
     double getFinalsalary(){
         return finalsalary;
     }
-
     public String getPosition() {
         return position;
     }
@@ -36,11 +27,21 @@ public class Employee {
     String getName(){
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
+    public void setBirthDate(GregorianCalendar birthDate) {
+        this.birthDate = birthDate;
+    }
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+    public GregorianCalendar getBirthDate() {
+        return birthDate;
+    }
+    public String getSurname() {
+        return surname;
+    }
 }
 
 interface EmployeePosition{
@@ -96,8 +97,10 @@ class Operator implements EmployeePosition{
         return baseSalary;
     }
 }
-
-class Company{
+interface employersHandler{
+    void handleEmployers(String post, int num, Company company, String whatToDo);
+}
+class Company implements employersHandler {
     public ArrayList<Employee> employees = new ArrayList<Employee>();
     public double operator_salary;
     public double manager_salary;
@@ -146,33 +149,7 @@ class Company{
 
 
 
-    void getLowestSalaryStaff( int count){
-        for(int i=0; i < employees.size(); i++){
-            for(int j=i; j < employees.size(); j++){
-                if(employees.get(i).getFinalsalary() > employees.get(j).getFinalsalary()){
-                    Collections.swap(employees, i, j);
-                }
-            }
-        }
-        for(int i=0; i<count; i++) {
-            System.out.println(employees.get(i).getPosition() + " " + employees.get(i).getFinalsalary());
-            System.out.println();
-        }
 
-    }
-    void getTopSalaryStaff(int count) {
-        for(int i=0; i < employees.size(); i++){
-            for(int j=i; j < employees.size(); j++){
-                if(employees.get(i).getFinalsalary() < employees.get(j).getFinalsalary()){
-                    Collections.swap(employees, i, j);
-                }
-            }
-        }
-        for(int i=0; i<count; i++) {
-            System.out.println(employees.get(i).getPosition() + " " + employees.get(i).getFinalsalary());
-            System.out.println();
-        }
-    }
 
     int getIncome(){
         double Income=0;
@@ -184,20 +161,68 @@ class Company{
         return (int)Income;
     }
 
+    @Override
+    public void handleEmployers(String post, int num, Company company, String whatToDo) {
+        switch (whatToDo) {
+            case "Hire":
+                {
+                    company.hireAll(post, num);
+                }
+        break;
+            case "Fire":
+            {
+                company.fire(num);
+            }
+            break;
+
+        }
+    }
+
     public static void main(String[] args) {
 
+        employersHandler anonimous = new employersHandler() {
+            @Override
+            public void handleEmployers(String post, int num, Company company, String whatToDo) {
+                switch (whatToDo) {
+                    case "Hire":
+                    {
+                        company.hireAll(post, num);
+                    }
+                    break;
+                    case "Fire":
+                    {
+                        company.fire(num);
+                    }
+                    break;
 
+                }}
+        };
+        employersHandler lambda = (String post, int num, Company company, String whatToDo) -> {
 
+            switch (whatToDo) {
+                case "Hire":
+                {
+                    company.hireAll(post, num);
+                }
+                break;
+                case "Fire":
+                {
+                    company.fire(num);
+                }
+                break;
+
+            }
+
+        };
         Company company1 = new Company();
         company1.manager_salary = 150000;
         company1.operator_salary = 100000;
         company1.topmanager_salary = 150000;
-        company1.hireAll("Manager",100);
-        company1.hireAll("Operator", 180);
-        company1.hireAll("Top Manager", 10);
-        company1.getTopSalaryStaff(10);
-        company1.getLowestSalaryStaff(30);
-        company1.fire(10);
+        company1.handleEmployers("Operator", 10, company1, "Hire" );
+        lambda.handleEmployers("Manager",150,company1,"Hire");
+        anonimous.handleEmployers("Top Manager",5,company1,"Hire");
+
+
 
     }
 }

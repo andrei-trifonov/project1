@@ -63,12 +63,18 @@ public class Calculator extends JFrame
         point.addActionListener((new ActionListener() {
             String last;
             public void actionPerformed(ActionEvent e) {
-                last = data.getText().substring(data.getText().length() - 1);
-
-                switch (last) {
-                    case ".": break;
-                    default: data.setText(data.getText() + e.getActionCommand()); break;
+                try {
+                    last = data.getText().substring(data.getText().length() - 1);
+                    switch (last) {
+                        case ".": break;
+                        default: data.setText(data.getText() + e.getActionCommand()); break;
+                    }
                 }
+                catch (StringIndexOutOfBoundsException ex){
+                    System.out.println("Нельзя начинать с точки");
+                }
+
+
 
             }
         }));
@@ -89,7 +95,10 @@ public class Calculator extends JFrame
         back.addActionListener((new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                data.setText(data.getText().substring(0,data.getText().length()-1));
+                try {data.setText(data.getText().substring(0,data.getText().length()-1));}
+                catch (StringIndexOutOfBoundsException ex){
+                    System.out.println("Строка уже пуста");
+                }
             }
         }));
         constraints.gridx = 4;
@@ -109,7 +118,13 @@ public class Calculator extends JFrame
                     if(str.charAt(i) != '+' && str.charAt(i) != '-' && str.charAt(i) != '/' && str.charAt(i) != '*' ){
                         tmps += str.charAt(i);
                         if (i== str.length()-1){
-                            b = Double.parseDouble(tmps);
+
+
+
+                            try {b = Double.parseDouble(tmps);}
+                            catch (NumberFormatException ex){
+                                System.out.println("Ошибка в числе");
+                            }
                             System.out.println(b);
                             switch (sign) {
                                 case '+': a= a+b; break;
@@ -121,7 +136,10 @@ public class Calculator extends JFrame
                     else {
                         if (sign != '&'){
 
-                            b = Double.parseDouble(tmps);
+                            try {b = Double.parseDouble(tmps);}
+                            catch (NumberFormatException ex){
+                                System.out.println("Ошибка в числе");
+                            }
                             System.out.println(b);
                             switch (sign) {
                                 case '+': a= a+b; break;
@@ -133,7 +151,11 @@ public class Calculator extends JFrame
                         }
                         if (sign == '&'){
                             sign = str.charAt(i);
-                            a = Double.parseDouble(tmps);
+
+                            try {a = Double.parseDouble(tmps);}
+                            catch (NumberFormatException ex){
+                                System.out.println("Ошибка в числе");
+                            }
                             System.out.println(a);
                             tmps = "" ;
                         }
@@ -193,6 +215,7 @@ public class Calculator extends JFrame
         content.setSize(200,200);
         content.setVisible(true);
         pack();
+
     }
 
     public static void main(String[] args)
