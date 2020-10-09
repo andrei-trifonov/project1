@@ -1,4 +1,4 @@
-package Practice9;
+package Practice10;
 
 
 import java.awt.*;
@@ -42,12 +42,12 @@ public class Calculator extends JFrame
 
             button.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                   data.setText(data.getText() + e.getActionCommand());
+                    data.setText(data.getText() + e.getActionCommand());
                 }
             });
             if (i<3)
                 constraints.gridx = i;
-                constraints.gridy = 1;
+            constraints.gridy = 1;
             if (i>=3 && i<6) {
                 constraints.gridx = i-3;
                 constraints.gridy = 2;}

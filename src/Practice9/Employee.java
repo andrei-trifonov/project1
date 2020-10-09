@@ -165,10 +165,10 @@ class Company implements employersHandler {
     public void handleEmployers(String post, int num, Company company, String whatToDo) {
         switch (whatToDo) {
             case "Hire":
-                {
-                    company.hireAll(post, num);
-                }
-        break;
+            {
+                company.hireAll(post, num);
+            }
+            break;
             case "Fire":
             {
                 company.fire(num);
