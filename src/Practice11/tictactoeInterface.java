@@ -171,9 +171,7 @@ class Service extends beginGame{
                 System.out.println(label.getText());
                 if (label.getText() == "Player1 turn"){
                     button.setText(player1Mark);
-
                 }
-
                 if (label.getText()=="Player2 turn"){
                     button.setText(player2Mark);
                 }
