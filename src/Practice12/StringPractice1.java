@@ -1,9 +1,9 @@
 package Practice12;
 
 public class StringPractice1 {
-    static int sum = 0;
+    static int sum = 0, cht = 0;
     static String tmp = "";
-    static String text = "Вася заработал 5000 рублей, Петя - 7563 рубля, а Маша - 30000 рублей";
+    static String text = "Вася заработал 5100 рублей, Петя - 7563 рубля, а Маша - 30100 рублей";
 
     public static void main(String[] args) {
 
@@ -15,7 +15,10 @@ public class StringPractice1 {
 
                 if (i+1 < text.length()){
                 if ((int) text.charAt(i + 1) < 47 || (int) text.charAt(i + 1) > 58) {
-                    sum += Integer.parseInt(tmp);
+                    if (cht==0 || cht ==2) {
+                        sum += Integer.parseInt(tmp);
+                    }
+                    cht++;
                     tmp = "";
                 }
                 }
