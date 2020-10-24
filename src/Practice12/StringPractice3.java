@@ -12,13 +12,18 @@ public class StringPractice3 {
                tmp += number.charAt(i);
            }
         }
-        if (number.length()<11){
-            if (number.length()<10&&(number.charAt(0)=='7' || number.charAt(0)=='8')){
+        System.out.println();
+        if (tmp.length()<11){
+            if (tmp.length()<=10&&(tmp.charAt(0)=='7' || tmp.charAt(0)=='8')){
             System.out.println("Неверный формат номера");
             System.exit(0);
             }
+            if (tmp.length()<10){
+                System.out.println("Неверный формат номера");
+                System.exit(0);
+            }
         }
-        if (number.length()>11){
+        if (tmp.length()>11){
             System.out.println("Неверный формат номера");
             System.exit(0);
         }
