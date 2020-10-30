@@ -29,13 +29,13 @@ public class EMail{
         Scanner in = new Scanner(System.in);
         String text = in.nextLine();
 
-        if (text.charAt(0)=='A'&&text.charAt(1)=='D'&&text.charAt(2)=='D'){
+        if (text!= null&&text.charAt(0)=='A'&&text.charAt(1)=='D'&&text.charAt(2)=='D'){
             System.out.println("Добавляется...");
             ADD(text.substring(3));
         }
 
 
-        if (text.charAt(0)=='L'&&text.charAt(1)=='I'&&text.charAt(2)=='S'&&text.charAt(3)=='T'){
+        if (text!=null&&text.charAt(0)=='L'&&text.charAt(1)=='I'&&text.charAt(2)=='S'&&text.charAt(3)=='T'){
             System.out.println("Список адресов:");
             LIST();
         }
