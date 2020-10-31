@@ -10,12 +10,16 @@ import java.util.regex.Pattern;
 public class EMail{
     static TreeSet <String> email = new TreeSet();
     static void ADD(String text){
-    Pattern check = Pattern.compile("([A-Za-z0-9]{1,}[\\\\.-]{0,1}[A-Za-z0-9]{1,})+@([A-Za-z0-9]{1,}[\\\\.-]{0,1}[A-Za-z0-9]{1,})+[\\\\.]{1}[a-z]{2,4}");
+    Pattern check = Pattern.compile("([A-Za-z0-9]{1,}[\\\\.-]{0,1}[A-Za-z0-9]{1,})+@([A-Za-z0-9]{1,}[\\\\.-]{0,1}[A-Za-z0-9]{1,})+([\\\\.]{1}[a-z]{2,4})");
     Matcher matcherCheck = check.matcher(text);
     if (!matcherCheck.find()){
             System.out.println("Ошибка в адресе");
         }
     else {
+        if (text.charAt(text.length()-1)=='.'){
+            System.out.println("Ошибка в адресе");
+        }
+        else
         email.add(text);
     }
     }
