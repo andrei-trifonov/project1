@@ -1,6 +1,6 @@
 package Practice12;
 
-import javafx.scene.transform.Scale;
+
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
