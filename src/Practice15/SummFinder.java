@@ -1,7 +1,7 @@
 package Practice15;
 
 
-import javafx.application.Application;
+
 
 import java.io.File;
 import java.io.FileWriter;
@@ -9,24 +9,25 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
 
-// в этом классе мы получаем размер файла
+
 public class SummFinder {
 
     public static void main(String[] args) throws IOException {
         Scanner in = new Scanner(System.in);
+        new File((System.getProperty("user.dir"))+"\\logger").mkdir();
         File log = new File(System.getProperty("user.dir")+"\\logger\\log.txt");
         if (!log.exists()) {
             log.createNewFile();
         }
 
         while (true) {
-
+            System.out.println("Введите путь до файла/папки");
             String input = in.nextLine();
             File file = new File(input);
 
             if (file.isDirectory()) {
                 if (file.exists()) {
-                Print(getFolderSizeBytes(file), input, true);
+                    Print(getFolderSizeBytes(file), input, true);
                 }
                 else
                     System.out.println("Папки не существует");
@@ -41,45 +42,45 @@ public class SummFinder {
     private static void Print(float size, String input, boolean folder) throws IOException {
         if (size > 1024*1024*1024){
             if (folder == true) {
-                System.out.println("Размер папки " + input + " " + size / (1024 * 1024 * 1024) + "Gb");
-                PrintLog("Размер папки " + input + " " + size / (1024 * 1024 * 1024) + "Gb");
+                System.out.println("Размер папки " + input + " составляет " + size / (1024 * 1024 * 1024) + "Gb");
+                PrintLog("Размер папки " + input + " составляет " + size / (1024 * 1024 * 1024) + "Gb");
             }
             else {
-                System.out.println("Размер файла " + input + " " + size / (1024 * 1024 * 1024) + "Gb");
-                PrintLog("Размер файла " + input + " " + size / (1024 * 1024 * 1024) + "Gb");
+                System.out.println("Размер файла " + input + " составляет " + size / (1024 * 1024 * 1024) + "Gb");
+                PrintLog("Размер файла " + input + " составляет " + size / (1024 * 1024 * 1024) + "Gb");
             }
             return;
         }
         if (size > 1024*1024){
             if (folder == true){
-                System.out.println("Размер папки " + input+ " " + size/(1024*1024) + "Mb");
-                PrintLog("Размер папки " + input+ " " + size/(1024*1024) + "Mb");
+                System.out.println("Размер папки " + input+ " составляет " + size/(1024*1024) + "Mb");
+                PrintLog("Размер папки " + input+ " составляет " + size/(1024*1024) + "Mb");
             }
             else {
-                System.out.println("Размер файла " + input + " " + size / (1024 * 1024) + "Mb");
-                PrintLog("Размер файла " + input + " " + size / (1024 * 1024) + "Mb");
+                System.out.println("Размер файла " + input + " составляет " + size / (1024 * 1024) + "Mb");
+                PrintLog("Размер файла " + input + " составляет " + size / (1024 * 1024) + "Mb");
             }
-           return;
+            return;
         }
         if (size > 1024){
             if (folder == true){
-                System.out.println("Размер папки " + input + " "+ size/(1024) + "Kb");
-                PrintLog("Размер папки " + input + " "+ size/(1024) + "Kb");
+                System.out.println("Размер папки " + input + " составляет "+ size/(1024) + "Kb");
+                PrintLog("Размер папки " + input + " составляет "+ size/(1024) + "Kb");
             }
             else
-                System.out.println("Размер файла " + input + " "+ size/(1024) + "Kb");
-                PrintLog("Размер файла " + input + " "+ size/(1024) + "Kb");
-           return;
+                System.out.println("Размер файла " + input + " составляет "+ size/(1024) + "Kb");
+            PrintLog("Размер файла " + input + " составляет "+ size/(1024) + "Kb");
+            return;
         }
         else {
             if (folder == true) {
-                System.out.println("Размер папки " + input + " " + size + "b");
-                PrintLog("Размер папки " + input + " " + size + "b");
+                System.out.println("Размер папки " + input + " составляет " + size + "b");
+                PrintLog("Размер папки " + input + " составляет " + size + "b");
             }
             else
-                {
-                System.out.println("Размер файла " + input + " " + size + "b");
-                PrintLog("Размер файла " + input + " " + size + "b");
+            {
+                System.out.println("Размер файла " + input + " составляет " + size + "b");
+                PrintLog("Размер файла " + input + " составляет " + size + "b");
             }
             return;
         }

@@ -1,24 +1,25 @@
 package Practice15;
 
 
-import javafx.application.Application;
+
 
 import java.io.*;
 import java.util.Scanner;
 
-// в этом классе мы получаем размер файла
+
 public class Logger {
 
     public static void main(String[] args) throws IOException {
 
         Scanner in = new Scanner(System.in);
+        new File((System.getProperty("user.dir"))+"\\logger").mkdir();
+        File file = new File(System.getProperty("user.dir")+"\\logger\\log.txt");
+        if (!file.exists()) {
+            file.createNewFile();
+        }
         while (true) {
             String input = in.nextLine();
-            new File((System.getProperty("user.dir"))+"\\logger").mkdir();
-            File file = new File(System.getProperty("user.dir")+"\\logger\\log.txt");
-            if (!file.exists()) {
-                file.createNewFile();
-            }
+
             PrintLog(input);
         }
 
