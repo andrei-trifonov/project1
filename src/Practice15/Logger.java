@@ -15,7 +15,12 @@ public class Logger {
         new File((System.getProperty("user.dir"))+"\\logger").mkdir();
         File file = new File(System.getProperty("user.dir")+"\\logger\\log.txt");
         if (!file.exists()) {
-            file.createNewFile();
+            try {
+                file.createNewFile();
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
         }
         while (true) {
             String input = in.nextLine();
@@ -26,10 +31,15 @@ public class Logger {
 
     }
     private static void PrintLog(String input) throws IOException {
-       FileWriter stream = new FileWriter(System.getProperty("user.dir")+"\\logger\\log.txt", true);
-        stream.write(input +"\n");
-        System.out.println("log item added");
-        stream.close();
+        try {
+            FileWriter stream = new FileWriter(System.getProperty("user.dir") + "\\logger\\log.txt", true);
+            stream.write(input + "\n");
+            System.out.println("log item added");
+            stream.close();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
 

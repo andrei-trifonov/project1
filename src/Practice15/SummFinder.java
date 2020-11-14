@@ -17,8 +17,13 @@ public class SummFinder {
         new File((System.getProperty("user.dir"))+"\\logger").mkdir();
         File log = new File(System.getProperty("user.dir")+"\\logger\\log.txt");
         if (!log.exists()) {
-            log.createNewFile();
-        }
+            try {
+                log.createNewFile();
+            }
+            catch(IOException e) {
+                e.printStackTrace();
+            }
+            }
 
         while (true) {
             System.out.println("Введите путь до файла/папки");
@@ -40,49 +45,48 @@ public class SummFinder {
         }
     }
     private static void Print(float size, String input, boolean folder) throws IOException {
-        if (size > 1024*1024*1024){
-            if (folder == true) {
-                System.out.println("Размер папки " + input + " составляет " + size / (1024 * 1024 * 1024) + "Gb");
-                PrintLog("Размер папки " + input + " составляет " + size / (1024 * 1024 * 1024) + "Gb");
+        try {
+            if (size > 1024 * 1024 * 1024) {
+                if (folder == true) {
+                    System.out.println("Размер папки " + input + " составляет " + size / (1024 * 1024 * 1024) + "Gb");
+                    PrintLog("Размер папки " + input + " составляет " + size / (1024 * 1024 * 1024) + "Gb");
+                } else {
+                    System.out.println("Размер файла " + input + " составляет " + size / (1024 * 1024 * 1024) + "Gb");
+                    PrintLog("Размер файла " + input + " составляет " + size / (1024 * 1024 * 1024) + "Gb");
+                }
+                return;
             }
-            else {
-                System.out.println("Размер файла " + input + " составляет " + size / (1024 * 1024 * 1024) + "Gb");
-                PrintLog("Размер файла " + input + " составляет " + size / (1024 * 1024 * 1024) + "Gb");
+            if (size > 1024 * 1024) {
+                if (folder == true) {
+                    System.out.println("Размер папки " + input + " составляет " + size / (1024 * 1024) + "Mb");
+                    PrintLog("Размер папки " + input + " составляет " + size / (1024 * 1024) + "Mb");
+                } else {
+                    System.out.println("Размер файла " + input + " составляет " + size / (1024 * 1024) + "Mb");
+                    PrintLog("Размер файла " + input + " составляет " + size / (1024 * 1024) + "Mb");
+                }
+                return;
             }
-            return;
+            if (size > 1024) {
+                if (folder == true) {
+                    System.out.println("Размер папки " + input + " составляет " + size / (1024) + "Kb");
+                    PrintLog("Размер папки " + input + " составляет " + size / (1024) + "Kb");
+                } else
+                    System.out.println("Размер файла " + input + " составляет " + size / (1024) + "Kb");
+                PrintLog("Размер файла " + input + " составляет " + size / (1024) + "Kb");
+                return;
+            } else {
+                if (folder == true) {
+                    System.out.println("Размер папки " + input + " составляет " + size + "b");
+                    PrintLog("Размер папки " + input + " составляет " + size + "b");
+                } else {
+                    System.out.println("Размер файла " + input + " составляет " + size + "b");
+                    PrintLog("Размер файла " + input + " составляет " + size + "b");
+                }
+                return;
+            }
         }
-        if (size > 1024*1024){
-            if (folder == true){
-                System.out.println("Размер папки " + input+ " составляет " + size/(1024*1024) + "Mb");
-                PrintLog("Размер папки " + input+ " составляет " + size/(1024*1024) + "Mb");
-            }
-            else {
-                System.out.println("Размер файла " + input + " составляет " + size / (1024 * 1024) + "Mb");
-                PrintLog("Размер файла " + input + " составляет " + size / (1024 * 1024) + "Mb");
-            }
-            return;
-        }
-        if (size > 1024){
-            if (folder == true){
-                System.out.println("Размер папки " + input + " составляет "+ size/(1024) + "Kb");
-                PrintLog("Размер папки " + input + " составляет "+ size/(1024) + "Kb");
-            }
-            else
-                System.out.println("Размер файла " + input + " составляет "+ size/(1024) + "Kb");
-            PrintLog("Размер файла " + input + " составляет "+ size/(1024) + "Kb");
-            return;
-        }
-        else {
-            if (folder == true) {
-                System.out.println("Размер папки " + input + " составляет " + size + "b");
-                PrintLog("Размер папки " + input + " составляет " + size + "b");
-            }
-            else
-            {
-                System.out.println("Размер файла " + input + " составляет " + size + "b");
-                PrintLog("Размер файла " + input + " составляет " + size + "b");
-            }
-            return;
+        catch (IOException e){
+            e.printStackTrace();
         }
     }
     private static float getFileSizeBytes(File file) {
@@ -90,6 +94,7 @@ public class SummFinder {
     }
     private static float getFolderSizeBytes(File directory) {
         long length = 0;
+
         if (directory.listFiles()!= null) {
             for (File file : directory.listFiles()) {
 
@@ -102,9 +107,14 @@ public class SummFinder {
         return length;
     }
     private static void PrintLog(String input) throws IOException {
+        try{
         FileWriter stream = new FileWriter(System.getProperty("user.dir")+"\\logger\\log.txt", true);
         stream.write(input +"\n");
         stream.close();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
 }
