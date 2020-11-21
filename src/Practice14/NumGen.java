@@ -2,46 +2,34 @@ package Practice14;
 import java.util.*;
 
 public class NumGen {
-   static ArrayList<String> numlist1 = new ArrayList();
-   static HashSet<String> numlist2 = new HashSet();
-   static TreeSet<String> numlist3 = new TreeSet();
+
    static long Start;
    static long Finish;
-   static String randomNum(){
-        String number = "";
-        final char[] alphabet = {'А', 'В', 'Е', 'К', 'М','Н','О','Р', 'С','Т', 'У', 'Х'};
+   static void randomNum(String str){ 
+       String[] patternWords = {"A", "B", "E", "K", "M", "H", "O", "P", "C", "T", "Y", "X"};
+       String[] patternNumbers = {"000", "111", "222", "333", "444", "555", "666", "777", "888", "999"};
+       ArrayList<String> carNumbers = new ArrayList<>();
+           for(int i=0; i<12; i++){
+               for(int j=0; j<10; j++){
+                   for(int k=0; k<12; k++){
+                       for(int l=0; l<12; l++){
+                           for (int m=1; m<200; m++){
+                               carNumbers.add(patternWords[i] + patternNumbers[j] + patternWords[k] + patternWords[l] + m);
 
-        Random random = new Random();
-        int index = random.nextInt(alphabet.length);
-        number+=alphabet[index];
-        number+= String.valueOf(100+random.nextInt(899));
-        while(true){
-            index = random.nextInt(alphabet.length);
-            if (number.charAt(0)!=alphabet[index]) {
-                number += alphabet[index];
-                while (true) {
-                    index = random.nextInt(alphabet.length);
-                    if (number.charAt(0) != alphabet[index] && number.charAt(4) != alphabet[index]) {
-                        number += alphabet[index];
-                        break;
-                    }
-                }
-                break;
-            }
-        }
-        index = 1+random.nextInt(199);
-        if (index>9){
-            number+=String.valueOf(index);
-        }
-        else {
-            number+="0";
-            number+=String.valueOf(index);
-        }
-
-        return number;
-
+                           }
+                       }
+                   }
+               }
+           }
+           ArrayList<String> numlist1 = new ArrayList(carNumbers);
+           HashSet<String> numlist2 = new HashSet(carNumbers);
+           TreeSet<String> numlist3 = new TreeSet(carNumbers);
+           binarySort(str, numlist1);
+           simpleSort(str, numlist1);
+           hashSetSort(str, numlist2);
+           treeSetSort(str, numlist3);
    }
-    static void binarySort(String text){
+    static void binarySort(String text, ArrayList<String> numlist1){
     Collections.sort(numlist1);
     Start = System.nanoTime();
     if (Collections.binarySearch(numlist1, text)>0){
@@ -53,7 +41,7 @@ public class NumGen {
     }
 
     }
-    static void simpleSort(String text){
+    static void simpleSort(String text, ArrayList<String> numlist1){
        Start = System.nanoTime();
         for (int i = 0; i < numlist1.size(); i++) {
             if (numlist1.get(i).equals(text)){
@@ -65,7 +53,7 @@ public class NumGen {
         Finish = System.nanoTime();
         System.out.println("Поиск перебором: номер не найден, поиск занял: " + (Finish-Start) + "нс");
     }
-    static void hashSetSort(String text){
+    static void hashSetSort(String text, HashSet<String> numlist2){
        Start = System.nanoTime();
        if (numlist2.contains(text)){
            Finish = System.nanoTime();
@@ -76,7 +64,7 @@ public class NumGen {
            Finish = System.nanoTime();
            System.out.println("Поиск hashSet: номер не найден, поиск занял: "  + (Finish-Start) + "нс");
    }}
-   static void treeSetSort(String text){
+   static void treeSetSort(String text,TreeSet<String> numlist3 ){
        Start = System.nanoTime();
        if (numlist3.contains(text)){
            Finish = System.nanoTime();
@@ -89,23 +77,12 @@ public class NumGen {
 }}
 
     public static void main(String[] args) {
-        for (int i = 0; i < 2000001; i++) {
-
-            String tmp = randomNum();
-            numlist1.add(tmp);
-            numlist2.add(tmp);
-            numlist3.add(tmp);
-            if (i<10)
-            System.out.println(tmp);
-        }
+         
+       
         while (true){
-
             Scanner in = new Scanner(System.in);
             String search = in.nextLine();
-            simpleSort(search);
-            binarySort(search);
-            hashSetSort(search);
-            treeSetSort(search);
+            randomNum(search);
         }
     }
 }

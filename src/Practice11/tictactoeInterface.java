@@ -1,6 +1,6 @@
 package Practice11;
 
-import javafx.application.Application;
+
 
 import javax.swing.*;
 import java.awt.*;
