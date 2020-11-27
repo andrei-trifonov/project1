@@ -1,99 +1,87 @@
 package Practice17;
 
+import com.google.gson.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.*;
+class AllMap{
+    public ArrayList lines;
+    public Map stations;
 
-//
-//import org.jsoup.Jsoup;
-//import org.jsoup.nodes.Document;
-//import org.jsoup.nodes.Element;
-//import org.jsoup.select.Elements;
-//
-//import java.io.*;
-//import java.net.MalformedURLException;
-//import java.net.URL;
-//class Line {
-//    public String name, num;
-//}
-//
+}
+class Lines{
+    public String  number, name;
+    public Lines (String number, String name){
+        this.name = name;
+        this.number = number;
+    }
+}
 public class Metro {
-//
-//    static public String GetUrl(Element el){
-//        String src = el.absUrl("src");
-//        return src;
-//    }
-//
-//    public static void main(String[] args) throws IOException {
-//        new File(System.getProperty("user.dir") + "\\images").mkdir();
-//        Document doc = Jsoup.connect("https://www.moscowmap.ru/metro.html#lines").get();
-//        Elements line = null;
-//        String def = "js-metro-line t-metrostation-list-header t-icon-metroln ln-";
-//      //String[] lines = new String[17];
-//        Line[] lines = new Line[17];
-//        for (int i = 0; i<17; i++){
-//
-//            switch (i) {
-//                case (16): {
-//                    line = (doc.getElementsByClass(def + "D2"));
-//                }
-//                break;
-//                case (15): {
-//                    line = (doc.getElementsByClass(def + "D1"));
-//                }
-//                break;
-//                case (14): {
-//                    line = (doc.getElementsByClass(def + "15"));
-//                }
-//                break;
-//                case (13): {
-//                    line = (doc.getElementsByClass(def + "14"));
-//                }
-//                break;
-//                case (12): {
-//                    line = (doc.getElementsByClass(def + i));
-//                }
-//                break;
-//                case (11): {
-//                    line = (doc.getElementsByClass(def + "11A"));
-//                }
-//                break;
-//                default:
-//                    line = (doc.getElementsByClass(def + (i + 1)));
-//
-//                    break;
-//            }
-//
-//         for (Element el : line) {
-//           // lines[i] = (el.text());
-//             lines[i].name = el.text()
-//         }
-//        }
-//        for (int i = 0; i < lines.length; i++) {
-//            System.out.println(lines[i]);
-//        }
-//
-//
-//
-//    }
+
 public static void main(String[] args) throws IOException {
+
+        AllMap object = new AllMap();
+     ArrayList lines= new ArrayList();
+
+    Map<String, List> stations = new HashMap<>();
         Document doc = Jsoup.connect("https://www.moscowmap.ru/metro.html#lines]").maxBodySize(0).get();
         Elements objects = doc.select("span.js-metro-line.t-metrostation-list-header.t-icon-metroln");
+
     for (Element el : objects) {
-        System.out.println(el.text());
-        System.out.println(el.attr("data-line"));
+        lines.add(new Lines(el.attr("data-line"),el.text()));
     }
-        objects = doc.select("div.js-metro-stations.t-metrostation-list-table");
+    object.lines = lines;
+
+    objects = doc.select("div.js-metro-stations.t-metrostation-list-table");
     for (Element el : objects) {
+        List list = new ArrayList();
        for (Element st : el.children()){
-           System.out.println(st.text() + " " + el.attr("data-line"));
+           list.add(st.text());
        }
-       System.out.println();
+       stations.put(el.attr("data-line"), list);
     }
+   object.stations= stations;
+    Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .create();
+    String str = gson.toJson(object);
+    File file = new File("File.json");
+    try(FileOutputStream stream = new FileOutputStream(file)) {
+        file.createNewFile();
+        stream.write(str.getBytes());
+    }catch (IOException e){
+        System.out.println("can't write to file");
+    }
+    str = "";
+    try(FileInputStream stream = new FileInputStream(file)) {
+        while (true) {
+            int code = stream.read();
+
+            if (code < 0)
+                break;
+
+            char ch = (char) code;
+            str+=ch;}
+        AllMap object2 = new Gson().fromJson(str, AllMap.class);
+
+        Iterator<Map.Entry<String, List>> it = object2.stations.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, List> pair = it.next();
+           System.out.println(  "Ветвь: " + pair.getKey() + " Станций: "+ pair.getValue().size() );
+        }
+
+
+    }catch (IOException e){
+        System.out.println("can't write to file");
+    }
+
+
+
+
 }
 
 }
