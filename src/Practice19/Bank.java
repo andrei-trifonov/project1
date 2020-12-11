@@ -28,63 +28,61 @@ public class Bank extends Thread
             System.out.println("Ошибка при создании БД");
         }
         accounts = start;
-        while (true) {
+        System.out.println("Введите число операций");
+        Scanner in1 = new Scanner(System.in);
+        long amount = in1.nextLong();
+        try {
+            ArrayList <Thread> threads = new ArrayList<>();
+        for (int k=0; k<amount; k++) {
             System.out.println("Узнать баланс - 1, перевести средства - 2");
-            try {
+
                 Scanner in3 = new Scanner(System.in);
                 int choose = in3.nextInt();
-                if (choose == 2) {
-                    System.out.println("Сколько одновременных переводов?");
-                    Scanner in1 = new Scanner(System.in);
-                    long amount = in1.nextLong();
-                    ArrayList <String> sender = new ArrayList<>();
-                    ArrayList <String> receiver = new ArrayList<>();
-                    ArrayList <Long> money = new ArrayList<>();
-                    for (long i = 0; i < amount; i++) {
+                ArrayList <String> sender = new ArrayList<>();
+                ArrayList <String> receiver = new ArrayList<>();
+                ArrayList <Long> money = new ArrayList<>();
+                ArrayList <String> account = new ArrayList<>();
+
+
+                 if (choose == 2) {
                         Scanner in2 = new Scanner(System.in);
-                        System.out.println("Перевод № " + (i + 1));
                         System.out.println("Введите номер счета отправителя");
                         sender.add(in2.nextLine());
                         System.out.println("Введите номер счета получателя");
                         receiver.add (in2.nextLine());
                         System.out.println("Введите сумму");
                         money.add(in2.nextLong());
+                     int finalK = receiver.size()-1;
+                     threads.add(new Thread(()->{
+                         try {
+                             this.transfer(sender.get(finalK), receiver.get(finalK), money.get(finalK));
+                         }
+                         catch (Exception e){
+                             System.out.println("Ошибка транзакции");
+                         }
+                     }));
                     }
-                    for (long i = 0; i < amount; i++){
-                        long finalI = i;
-                        new Thread(()->{
-                            try {
-                                this.transfer(sender.get((int) finalI), receiver.get((int) finalI), money.get((int) finalI));
-                            }
-                            catch (Exception e){
-                                System.out.println("Ошибка транзакции");
-                            }
-                        }).start();
-                    }
-                }
+
 
                 if (choose == 1) {
-                    System.out.println("Сколько одновременных запросов?");
-                    Scanner in1 = new Scanner(System.in);
-                    long numb = in1.nextLong();
-                    ArrayList <String> account = new ArrayList<>();
-                    for (long i = 0; i < numb; i++) {
                         System.out.println("Введите номер счета");
                         Scanner in2 = new Scanner(System.in);
                         account.add(in2.nextLine());
-                    }
-                    for (long i = 0; i < numb; i++) {
-                        long finalI = i;
-                        new Thread(()-> {
-                            long amount = this.getBalance(account.get((int) finalI));
-                            System.out.println("Счет номер: " + account.get((int) finalI) + " текущий баланс: " + amount);
-                        }).start();
-                    }
+                    int finalK1 = account.size()-1;
+                    threads.add(  new Thread(()-> {
+                              long amount1 = this.getBalance(account.get(finalK1));
+                                 System.out.println("Счет номер: " + account.get(finalK1) + " текущий баланс: " + amount1);
+                    }));
                 }
+
+
             }
-            catch (Exception e){
-                System.out.println("Ошибка при обработке запроса");
+            for (int i = 0; i < amount; i++){
+                threads.get(i).start();
             }
+        }
+        catch (Exception e){
+            System.out.println("Ошибка при обработке запроса");
         }
     }
 
@@ -145,7 +143,7 @@ public class Bank extends Thread
     }
 
 
-    public long getBalance(String accountNum)
+    public synchronized long getBalance(String accountNum)
     {
         return accounts.get(accountNum).getMoney();
     }
