@@ -110,13 +110,11 @@ public class Bank extends Thread
                 else{
                     if (accounts.get(fromAccountNum).getMoney()>=amount) {
                         new Thread(()-> {
-                            synchronized (this) {
                                 accounts.get(fromAccountNum).setMoney(accounts.get(fromAccountNum).getMoney() - amount);
-                            } }).start();
+                        }).start();
                         new Thread(()-> {
-                            synchronized (this) {
                                 accounts.get(toAccountNum).setMoney(accounts.get(toAccountNum).getMoney() + amount);
-                            } }).start();
+                        }).start();
                     }
                     else {
                         System.out.println("Недостаточно средств для перевода, счет:" + fromAccountNum);
