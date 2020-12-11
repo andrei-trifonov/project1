@@ -112,6 +112,7 @@ public class Bank extends Thread
                 if (amount > 50000) {
 
                     if (isFraud(fromAccountNum, toAccountNum, amount) == true) {
+
                         accounts.get(fromAccountNum).setBlocked(true);
                         accounts.get(toAccountNum).setBlocked(true);
                         System.out.println("Счета заблокированы: " + fromAccountNum + " , " + toAccountNum);
