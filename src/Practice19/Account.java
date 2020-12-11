@@ -1,17 +1,20 @@
 package Practice19;
+
+import java.util.concurrent.atomic.AtomicLong;
+
 public class Account
 {
     private  boolean blocked;
-    private long money;
+    private AtomicLong money = new AtomicLong(0);
     private String accNumber;
 
     public  Account(String accNumber, long money){
         this.accNumber = accNumber;
-        this.money = money;
+        this.money.set(money);
         blocked = false;
     }
     public long getMoney() {
-        return money;
+        return money.get();
     }
 
     public String getAccNumber() {
@@ -30,6 +33,6 @@ public class Account
     }
 
     public void setMoney(long money) {
-        this.money = money;
+        this.money.set(money);
     }
 }

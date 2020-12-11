@@ -98,7 +98,7 @@ public class Bank extends Thread
 
 
 
-    public void transfer(String fromAccountNum, String toAccountNum, long amount) throws InterruptedException {
+    public synchronized void transfer(String fromAccountNum, String toAccountNum, long amount) throws InterruptedException {
         if (!accounts.get(fromAccountNum).getBlocked() && !accounts.get(toAccountNum).getBlocked()){
             if (amount > 50000){
 
